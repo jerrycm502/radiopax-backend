@@ -631,7 +631,7 @@
 
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xxs text-slate-650 font-bold uppercase tracking-wider">
                 <p>© {{ date('Y') }} Radio Pax 91.9 FM. Todos los derechos reservados.</p>
-                <p>Desarrollado para la Diócesis de Zacapa, Guatemala</p>
+                <p>Diseñado y Desarrollado con ❤️ por Jerry Cordero</p>
             </div>
         </div>
     </footer>
