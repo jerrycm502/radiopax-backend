@@ -75,6 +75,17 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #d97706; /* bg-amber-600 */
         }
+
+        /* Sponsors infinite loop scroll animation */
+        @keyframes infinite-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-infinite-scroll {
+            display: flex;
+            width: max-content;
+            animation: infinite-scroll 25s linear infinite;
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-amber-500 selection:text-slate-950" 
@@ -566,28 +577,58 @@
             @if($sponsors->isEmpty())
                 <p class="text-center text-slate-500 text-sm">Espacio disponible para patrocinadores oficiales. Contáctanos para anunciar tu marca.</p>
             @else
-                <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 lg:gap-16">
-                    @foreach($sponsors as $sponsor)
-                        <div class="shrink-0 max-w-[140px] md:max-w-[160px]">
-                            @if($sponsor->link_url)
-                                <a href="{{ $sponsor->link_url }}" target="_blank" class="block group relative" title="{{ $sponsor->name }}">
-                                    @if($sponsor->logo_url)
-                                        <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="h-12 w-auto object-contain opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-105">
-                                    @else
-                                        <span class="text-xs font-bold text-slate-500 group-hover:text-amber-500 transition-colors uppercase tracking-wider block text-center py-2 px-4 border border-slate-900 rounded-xl bg-slate-900/20">{{ $sponsor->name }}</span>
-                                    @endif
-                                </a>
-                            @else
-                                <div class="relative group" title="{{ $sponsor->name }}">
-                                    @if($sponsor->logo_url)
-                                        <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="h-12 w-auto object-contain opacity-65 grayscale transition-all duration-350">
-                                    @else
-                                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block text-center py-2 px-4 border border-slate-900 rounded-xl bg-slate-900/20">{{ $sponsor->name }}</span>
-                                    @endif
-                                </div>
-                            @endif
-                        </div>
-                    @endforeach
+                <!-- Gradient edge-fade mask layout -->
+                <div class="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)] py-4">
+                    <!-- Scrolling track, pauses on hover -->
+                    <div class="animate-infinite-scroll hover:[animation-play-state:paused] flex items-center gap-12 md:gap-20">
+                        
+                        <!-- First instance of sponsors -->
+                        @foreach($sponsors as $sponsor)
+                            <div class="shrink-0 max-w-[180px] md:max-w-[220px]">
+                                @if($sponsor->link_url)
+                                    <a href="{{ $sponsor->link_url }}" target="_blank" class="block group relative" title="{{ $sponsor->name }}">
+                                        @if($sponsor->logo_url)
+                                            <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="h-16 md:h-20 w-auto object-contain opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110 group-hover:-translate-y-1 filter hover:drop-shadow-[0_0_15px_rgba(217,119,6,0.15)]">
+                                        @else
+                                            <span class="text-xs font-bold text-slate-500 group-hover:text-amber-500 transition-colors uppercase tracking-wider block text-center py-3 px-6 border border-slate-900 rounded-2xl bg-slate-900/40 transform group-hover:scale-105 group-hover:-translate-y-0.5">{{ $sponsor->name }}</span>
+                                        @endif
+                                    </a>
+                                @else
+                                    <div class="relative group" title="{{ $sponsor->name }}">
+                                        @if($sponsor->logo_url)
+                                            <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="h-16 md:h-20 w-auto object-contain opacity-60 grayscale transition-all duration-350">
+                                        @else
+                                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block text-center py-3 px-6 border border-slate-900 rounded-2xl bg-slate-900/40">{{ $sponsor->name }}</span>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+
+                        <!-- Second duplicated instance of sponsors for seamless infinite looping -->
+                        @foreach($sponsors as $sponsor)
+                            <div class="shrink-0 max-w-[180px] md:max-w-[220px]">
+                                @if($sponsor->link_url)
+                                    <a href="{{ $sponsor->link_url }}" target="_blank" class="block group relative" title="{{ $sponsor->name }}">
+                                        @if($sponsor->logo_url)
+                                            <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="h-16 md:h-20 w-auto object-contain opacity-60 hover:opacity-100 grayscale hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110 group-hover:-translate-y-1 filter hover:drop-shadow-[0_0_15px_rgba(217,119,6,0.15)]">
+                                        @else
+                                            <span class="text-xs font-bold text-slate-500 group-hover:text-amber-500 transition-colors uppercase tracking-wider block text-center py-3 px-6 border border-slate-900 rounded-2xl bg-slate-900/40 transform group-hover:scale-105 group-hover:-translate-y-0.5">{{ $sponsor->name }}</span>
+                                        @endif
+                                    </a>
+                                @else
+                                    <div class="relative group" title="{{ $sponsor->name }}">
+                                        @if($sponsor->logo_url)
+                                            <img src="{{ $sponsor->logo_url }}" alt="{{ $sponsor->name }}" class="h-16 md:h-20 w-auto object-contain opacity-60 grayscale transition-all duration-350">
+                                        @else
+                                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block text-center py-3 px-6 border border-slate-900 rounded-2xl bg-slate-900/40">{{ $sponsor->name }}</span>
+                                        @endif
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+
+                    </div>
                 </div>
             @endif
         </div>
