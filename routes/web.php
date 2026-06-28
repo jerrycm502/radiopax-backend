@@ -41,4 +41,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/schedules/{schedule}/edit', [AdminController::class, 'schedulesEdit'])->name('schedules.edit');
     Route::post('/schedules/{schedule}', [AdminController::class, 'schedulesUpdate'])->name('schedules.update');
     Route::delete('/schedules/{schedule}', [AdminController::class, 'schedulesDestroy'])->name('schedules.destroy');
+
+    // Sponsors CRUD
+    Route::get('/sponsors', [AdminController::class, 'sponsorsIndex'])->name('sponsors.index');
+    Route::get('/sponsors/create', [AdminController::class, 'sponsorsCreate'])->name('sponsors.create');
+    Route::post('/sponsors', [AdminController::class, 'sponsorsStore'])->name('sponsors.store');
+    Route::get('/sponsors/{sponsor}/edit', [AdminController::class, 'sponsorsEdit'])->name('sponsors.edit');
+    Route::post('/sponsors/{sponsor}', [AdminController::class, 'sponsorsUpdate'])->name('sponsors.update');
+    Route::delete('/sponsors/{sponsor}', [AdminController::class, 'sponsorsDestroy'])->name('sponsors.destroy');
 });

@@ -18,7 +18,7 @@
     </div>
 
     <!-- Quick Stats Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Stat card 1: News -->
         <a href="{{ route('admin.news.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
             <div class="space-y-1">
@@ -49,6 +49,17 @@
             </div>
             <div class="p-4 bg-navyDeep/5 text-navyDeep rounded-xl group-hover:bg-accentGold/10 group-hover:text-accentGold transition duration-200">
                 <i data-lucide="calendar" class="w-6 h-6"></i>
+            </div>
+        </a>
+
+        <!-- Stat card 4: Sponsors -->
+        <a href="{{ route('admin.sponsors.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
+            <div class="space-y-1">
+                <span class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Patrocinadores</span>
+                <span class="block text-3xl font-bold text-navyDeep">{{ $sponsorCount }}</span>
+            </div>
+            <div class="p-4 bg-navyDeep/5 text-navyDeep rounded-xl group-hover:bg-accentGold/10 group-hover:text-accentGold transition duration-200">
+                <i data-lucide="handshake" class="w-6 h-6"></i>
             </div>
         </a>
     </div>

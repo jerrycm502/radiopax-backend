@@ -6,6 +6,7 @@ use App\Models\News;
 use App\Models\WeeklySchedule;
 use App\Models\DailyGospel;
 use App\Models\CabinStatus;
+use App\Models\Sponsor;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -27,8 +28,9 @@ class AdminController extends Controller
         $newsCount = News::count();
         $scheduleCount = WeeklySchedule::count();
         $gospelCount = DailyGospel::count();
+        $sponsorCount = Sponsor::count();
 
-        return view('admin.dashboard', compact('cabin', 'newsCount', 'scheduleCount', 'gospelCount'));
+        return view('admin.dashboard', compact('cabin', 'newsCount', 'scheduleCount', 'gospelCount', 'sponsorCount'));
     }
 
     /**
@@ -231,5 +233,61 @@ class AdminController extends Controller
     {
         $schedule->delete();
         return redirect()->route('admin.schedules.index')->with('success', 'Programa eliminado correctamente.');
+    }
+
+    // --- Sponsors CRUD ---
+
+    public function sponsorsIndex()
+    {
+        $sponsors = Sponsor::orderBy('name', 'asc')->paginate(10);
+        return view('admin.sponsors.index', compact('sponsors'));
+    }
+
+    public function sponsorsCreate()
+    {
+        return view('admin.sponsors.form', ['item' => new Sponsor()]);
+    }
+
+    public function sponsorsStore(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'logo_url' => 'nullable|url|max:255',
+            'link_url' => 'nullable|url|max:255',
+            'is_active' => 'sometimes|boolean',
+        ]);
+
+        $data['is_active'] = $request->has('is_active');
+
+        Sponsor::create($data);
+
+        return redirect()->route('admin.sponsors.index')->with('success', 'Patrocinador creado correctamente.');
+    }
+
+    public function sponsorsEdit(Sponsor $sponsor)
+    {
+        return view('admin.sponsors.form', ['item' => $sponsor]);
+    }
+
+    public function sponsorsUpdate(Request $request, Sponsor $sponsor)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'logo_url' => 'nullable|url|max:255',
+            'link_url' => 'nullable|url|max:255',
+            'is_active' => 'sometimes|boolean',
+        ]);
+
+        $data['is_active'] = $request->has('is_active');
+
+        $sponsor->update($data);
+
+        return redirect()->route('admin.sponsors.index')->with('success', 'Patrocinador actualizado correctamente.');
+    }
+
+    public function sponsorsDestroy(Sponsor $sponsor)
+    {
+        $sponsor->delete();
+        return redirect()->route('admin.sponsors.index')->with('success', 'Patrocinador eliminado correctamente.');
     }
 }

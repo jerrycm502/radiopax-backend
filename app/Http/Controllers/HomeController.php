@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\WeeklySchedule;
 use App\Models\DailyGospel;
+use App\Models\Sponsor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,9 @@ class HomeController extends Controller
         // We'll structure days as: 1 = Lunes, 2 = Martes, ..., 7 = Domingo
         $schedules = WeeklySchedule::orderBy('start_time', 'asc')->get();
 
-        return view('index', compact('news', 'gospel', 'schedules'));
+        // 4. Fetch active sponsors
+        $sponsors = Sponsor::where('is_active', true)->orderBy('name', 'asc')->get();
+
+        return view('index', compact('news', 'gospel', 'schedules', 'sponsors'));
     }
 }
