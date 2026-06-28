@@ -252,12 +252,18 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:100',
-            'logo_url' => 'nullable|url|max:255',
+            'logo_url' => 'nullable|string|max:255',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'link_url' => 'nullable|url|max:255',
             'is_active' => 'sometimes|boolean',
         ]);
 
         $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('logo_file')) {
+            $path = $request->file('logo_file')->store('sponsors', 'public');
+            $data['logo_url'] = '/storage/' . $path;
+        }
 
         Sponsor::create($data);
 
@@ -273,12 +279,18 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:100',
-            'logo_url' => 'nullable|url|max:255',
+            'logo_url' => 'nullable|string|max:255',
+            'logo_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'link_url' => 'nullable|url|max:255',
             'is_active' => 'sometimes|boolean',
         ]);
 
         $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('logo_file')) {
+            $path = $request->file('logo_file')->store('sponsors', 'public');
+            $data['logo_url'] = '/storage/' . $path;
+        }
 
         $sponsor->update($data);
 

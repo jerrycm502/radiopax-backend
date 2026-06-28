@@ -18,7 +18,7 @@
 
     <!-- Form Card -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
-        <form action="{{ $item->exists ? route('admin.sponsors.update', $item->id) : route('admin.sponsors.store') }}" method="POST" class="space-y-6">
+        <form action="{{ $item->exists ? route('admin.sponsors.update', $item->id) : route('admin.sponsors.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -33,16 +33,39 @@
                     @enderror
                 </div>
 
-                <!-- Logo URL -->
-                <div class="sm:col-span-2">
-                    <label for="logo_url" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">URL del Logotipo / Banner Publicitario</label>
-                    <input type="url" name="logo_url" id="logo_url" value="{{ old('logo_url', $item->logo_url) }}"
-                        class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-1 focus:ring-navyPetrol focus:outline-none bg-slate-50 focus:bg-white"
-                        placeholder="Ej. https://mi-web.com/imagenes/logos/el-milagro.png">
-                    <span class="text-slate-450 text-[10px] mt-1 block">Inserta la dirección URL pública de la imagen del logotipo. Si es posible, utiliza imágenes con fondo transparente (PNG/WebP).</span>
-                    @error('logo_url')
-                        <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>
-                    @enderror
+                <!-- Logo File & URL (Dual Input) -->
+                <div class="sm:col-span-2 space-y-4">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500">Logotipo / Banner Publicitario</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Option A: File Upload -->
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl">
+                            <span class="block text-xs font-bold text-navyPetrol uppercase tracking-wide mb-2">Opción A: Subir Archivo de Imagen</span>
+                            <input type="file" name="logo_file" id="logo_file" accept="image/*"
+                                class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-navyDeep/10 file:text-navyDeep hover:file:bg-navyDeep/20">
+                            <span class="text-slate-450 text-[10px] mt-1.5 block">Formatos: PNG, JPG, WebP, SVG (Max 2MB). Ideal fondo transparente.</span>
+                            @error('logo_file')
+                                <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- Option B: URL Externa de la Imagen -->
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl">
+                            <span class="block text-xs font-bold text-navyPetrol uppercase tracking-wide mb-2">Opción B: URL Externa de la Imagen</span>
+                            <input type="text" name="logo_url" id="logo_url" value="{{ old('logo_url', $item->logo_url) }}"
+                                class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:ring-1 focus:ring-navyPetrol focus:outline-none bg-white"
+                                placeholder="Ej. https://mi-web.com/logo.png">
+                            <span class="text-slate-450 text-[10px] mt-1.5 block">Si la imagen ya está alojada en otro sitio web o servidor.</span>
+                            @error('logo_url')
+                                <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    @if($item->logo_url)
+                        <div class="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 inline-flex items-center gap-3">
+                            <span class="text-xs text-slate-500 font-semibold">Logotipo Actual:</span>
+                            <img src="{{ $item->logo_url }}" alt="Preview" class="h-8 w-auto object-contain bg-white border border-slate-100 p-0.5 rounded">
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Link URL -->
