@@ -100,12 +100,7 @@
                 <a href="#contacto" class="text-slate-300 hover:text-amber-500 transition-colors">Contacto</a>
             </nav>
 
-            <!-- Admin Access Link -->
-            <div class="flex items-center gap-4">
-                <a href="{{ route('login') }}" class="text-xs font-semibold text-slate-400 hover:text-amber-500 border border-slate-800 hover:border-amber-500/30 px-3.5 py-1.5 rounded-full transition-all duration-300">
-                    Panel Admin
-                </a>
-            </div>
+            <!-- Admin Access Link Hidden -->
         </div>
     </header>
 
