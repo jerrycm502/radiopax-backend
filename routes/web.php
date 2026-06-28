@@ -2,12 +2,11 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-// Redirect home page to admin dashboard
-Route::get('/', function () {
-    return redirect()->route('admin.dashboard');
-});
+// Public listener homepage
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Authentication Routes
 Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('login');
