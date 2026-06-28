@@ -366,7 +366,7 @@
                                     
                                     <div class="min-w-0 flex-1">
                                         <span class="inline-flex items-center text-xxs font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/15 uppercase tracking-wide">
-                                            {{ \Carbon\Carbon::createFromFormat('H:i:s', $program->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::createFromFormat('H:i:s', $program->end_time)->format('h:i A') }}
+                                            {{ \Carbon\Carbon::parse($program->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($program->end_time)->format('h:i A') }}
                                         </span>
                                         <h4 class="font-extrabold text-slate-100 text-base md:text-lg mt-1.5 truncate">{{ $program->name }}</h4>
                                         <p class="text-xs md:text-sm text-slate-400 mt-0.5 truncate">Con: <span class="text-slate-300 font-semibold">{{ $program->host }}</span></p>
