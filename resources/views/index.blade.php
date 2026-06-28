@@ -316,7 +316,7 @@
                     6 => 'Sábado',
                     7 => 'Domingo',
                 ];
-            @php
+            @endphp
 
             <div class="flex justify-start md:justify-center overflow-x-auto pb-4 mb-8 -mx-4 px-4 sm:mx-0 sm:px-0">
                 <div class="flex gap-2 p-1 bg-slate-900/80 backdrop-blur border border-slate-800 rounded-full shrink-0">
