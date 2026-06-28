@@ -84,7 +84,7 @@
         .animate-infinite-scroll {
             display: flex;
             width: max-content;
-            animation: infinite-scroll 25s linear infinite;
+            animation: infinite-scroll 55s linear infinite;
         }
     </style>
 </head>
