@@ -676,7 +676,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
-                            <span>Zacapa, Guatemala</span>
+                            <span>Chiquimula, Guatemala</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <svg class="w-4 h-4 text-amber-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -689,9 +689,15 @@
                     <!-- Social Media Badges -->
                     <div class="flex items-center gap-3 pt-2">
                         <!-- Facebook Link -->
-                        <a href="https://facebook.com/radiopax" target="_blank" class="w-8 h-8 rounded-full border border-slate-850 flex items-center justify-center text-slate-450 hover:text-amber-500 hover:border-amber-500/30 transition-colors">
+                        <a href="https://www.facebook.com/profile.php?id=100057720757522" target="_blank" class="w-8 h-8 rounded-full border border-slate-850 flex items-center justify-center text-slate-450 hover:text-amber-500 hover:border-amber-500/30 transition-colors">
                             <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
                                 <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+                            </svg>
+                        </a>
+                        <!-- WhatsApp Link -->
+                        <a href="https://wa.me/50279411234" target="_blank" class="w-8 h-8 rounded-full border border-slate-850 flex items-center justify-center text-slate-450 hover:text-amber-500 hover:border-amber-500/30 transition-colors">
+                            <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.725 1.45 5.556 0 10.082-4.522 10.086-10.076.002-2.69-1.04-5.216-2.93-7.11-1.89-1.893-4.407-2.936-7.097-2.937-5.564 0-10.091 4.522-10.095 10.076-.002 1.81.474 3.578 1.38 5.128l-.949 3.467 3.557-.933zM18.2 14.86c-.33-.164-1.953-.964-2.251-1.07-.298-.11-.515-.165-.73.164-.215.33-.834 1.07-1.022 1.29-.19.215-.376.242-.705.078-1.023-.515-1.74-.94-2.42-2.105-.18-.315-.18-.58-.02-.74.15-.145.33-.377.5-.567.167-.19.222-.315.33-.53.11-.215.056-.405-.03-.568-.084-.164-.73-1.76-.999-2.417-.266-.64-.535-.554-.73-.564-.19-.01-.407-.01-.624-.01-.216 0-.57.08-0.868.404-.298.33-1.14 1.116-1.14 2.72 0 1.605 1.169 3.159 1.329 3.376.162.215 2.3 3.51 5.572 4.92.778.336 1.386.537 1.859.688.78.248 1.49.213 2.052.129.627-.094 1.953-.799 2.228-1.57.275-.77.275-1.43.193-1.57-.083-.14-.303-.223-.633-.388z"/>
                             </svg>
                         </a>
                         <!-- WhatsApp Link -->
