@@ -18,7 +18,7 @@
 
     <!-- Form Card -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
-        <form action="{{ $item->exists ? route('admin.news.update', $item->id) : route('admin.news.store') }}" method="POST" class="space-y-6">
+        <form action="{{ $item->exists ? route('admin.news.update', $item->id) : route('admin.news.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
             <!-- Form parameters -->
@@ -59,16 +59,39 @@
                     @enderror
                 </div>
 
-                <!-- Image URL -->
-                <div class="sm:col-span-2">
-                    <label for="image_url" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">URL de Imagen Ilustrativa (Opcional)</label>
-                    <input type="url" name="image_url" id="image_url" value="{{ old('image_url', $item->image_url) }}"
-                        class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-1 focus:ring-navyPetrol focus:outline-none bg-slate-50 focus:bg-white"
-                        placeholder="Ej. https://miservidor.com/imagenes/evento.jpg">
-                    <span class="text-slate-400 text-[10px] mt-1 block">Deja en blanco para usar la carátula predeterminada en la aplicación móvil.</span>
-                    @error('image_url')
-                        <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>
-                    @enderror
+                <!-- Image File & URL (Dual Input) -->
+                <div class="sm:col-span-2 space-y-4">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500">Imagen Ilustrativa del Aviso</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Option A: File Upload -->
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl">
+                            <span class="block text-xs font-bold text-navyPetrol uppercase tracking-wide mb-2">Opción A: Subir Archivo de Imagen</span>
+                            <input type="file" name="image_file" id="image_file" accept="image/*"
+                                class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-navyDeep/10 file:text-navyDeep hover:file:bg-navyDeep/20">
+                            <span class="text-slate-450 text-[10px] mt-1.5 block">Formatos recomendados: PNG, JPG, WebP (Máx. 2MB).</span>
+                            @error('image_file')
+                                <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <!-- Option B: URL Externa de la Imagen -->
+                        <div class="bg-slate-50 p-4 border border-slate-200 rounded-xl">
+                            <span class="block text-xs font-bold text-navyPetrol uppercase tracking-wide mb-2">Opción B: URL Externa de la Imagen</span>
+                            <input type="text" name="image_url" id="image_url" value="{{ old('image_url', $item->image_url) }}"
+                                class="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:ring-1 focus:ring-navyPetrol focus:outline-none bg-white"
+                                placeholder="Ej. https://mi-servidor.com/evento.jpg">
+                            <span class="text-slate-450 text-[10px] mt-1.5 block">Si la imagen ya se encuentra subida en otro servidor web.</span>
+                            @error('image_url')
+                                <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    @if($item->image_url)
+                        <div class="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-200 inline-flex items-center gap-3">
+                            <span class="text-xs text-slate-500 font-semibold">Imagen Actual:</span>
+                            <img src="{{ $item->image_url }}" alt="Preview" class="h-12 w-auto object-contain bg-white border border-slate-100 p-0.5 rounded">
+                        </div>
+                    @endif
                 </div>
             </div>
 

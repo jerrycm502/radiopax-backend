@@ -75,12 +75,18 @@ class AdminController extends Controller
             'title' => 'required|string|max:200',
             'content' => 'required|string',
             'category' => 'required|in:Parroquial,Radio,Comunidad',
-            'image_url' => 'nullable|url|max:255',
+            'image_url' => 'nullable|string|max:255',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'is_important' => 'sometimes|boolean',
             'published_at' => 'required|date',
         ]);
 
         $data['is_important'] = $request->has('is_important');
+
+        if ($request->hasFile('image_file')) {
+            $path = $request->file('image_file')->store('news', 'public');
+            $data['image_url'] = '/storage/' . $path;
+        }
 
         News::create($data);
 
@@ -98,12 +104,18 @@ class AdminController extends Controller
             'title' => 'required|string|max:200',
             'content' => 'required|string',
             'category' => 'required|in:Parroquial,Radio,Comunidad',
-            'image_url' => 'nullable|url|max:255',
+            'image_url' => 'nullable|string|max:255',
+            'image_file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'is_important' => 'sometimes|boolean',
             'published_at' => 'required|date',
         ]);
 
         $data['is_important'] = $request->has('is_important');
+
+        if ($request->hasFile('image_file')) {
+            $path = $request->file('image_file')->store('news', 'public');
+            $data['image_url'] = '/storage/' . $path;
+        }
 
         $news->update($data);
 
