@@ -19,7 +19,7 @@
 
     <!-- Quick Stats Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        @can('manage-all')
+        @can('manage-news')
         <!-- Stat card 1: News -->
         <a href="{{ route('admin.news.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
             <div class="space-y-1">
@@ -32,6 +32,7 @@
         </a>
         @endcan
 
+        @can('manage-gospels')
         <!-- Stat card 2: Gospel -->
         <a href="{{ route('admin.gospels.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
             <div class="space-y-1">
@@ -42,6 +43,7 @@
                 <i data-lucide="book-open" class="w-6 h-6"></i>
             </div>
         </a>
+        @endcan
 
         @can('manage-all')
         <!-- Stat card 3: Weekly Schedule -->
@@ -220,21 +222,28 @@
     @endcan
 
     @cannot('manage-all')
-    <!-- Dashboard card for Evangelizador -->
+    <!-- Dashboard card for Collaborator Roles -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
-        <div class="flex items-center space-x-3 text-emerald-600">
-            <i data-lucide="book-open" class="w-6 h-6"></i>
-            <h2 class="text-xl font-serif font-bold text-slate-800">Panel del Evangelizador</h2>
+        <div class="flex items-center space-x-3 text-navyPetrol">
+            <i data-lucide="shield-check" class="w-6 h-6"></i>
+            <h2 class="text-xl font-serif font-bold text-slate-800">Panel del Colaborador</h2>
         </div>
         <p class="text-slate-500 text-sm leading-relaxed">
-            Bienvenido a tu panel de control de Radio Pax. Como evangelizador, tienes los permisos necesarios para administrar las lecturas y reflexiones del <strong>Evangelio Diario</strong>. 
-            Utiliza la barra de navegación para agregar nuevos evangelios o editar los existentes.
+            Bienvenido al panel administrativo de Radio Pax. Tienes permisos asignados para gestionar los siguientes módulos de contenido. Haz clic en las opciones para comenzar a trabajar:
         </p>
-        <div class="pt-2">
-            <a href="{{ route('admin.gospels.create') }}" class="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow transition duration-200">
-                <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                <span>Publicar Evangelio de Hoy</span>
+        <div class="flex flex-wrap gap-4 pt-2">
+            @can('manage-gospels')
+            <a href="{{ route('admin.gospels.index') }}" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-md transition duration-200">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                <span>Administrar Evangelios</span>
             </a>
+            @endcan
+            @can('manage-news')
+            <a href="{{ route('admin.news.index') }}" class="inline-flex items-center space-x-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold rounded-xl shadow-md transition duration-200">
+                <i data-lucide="megaphone" class="w-4 h-4"></i>
+                <span>Administrar Avisos y Noticias</span>
+            </a>
+            @endcan
         </div>
     </div>
     @endcannot

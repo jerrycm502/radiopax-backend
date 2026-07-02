@@ -27,11 +27,15 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-all', function (User $user) {
-            return $user->role === 'admin';
+            return in_array($user->role, ['admin', 'locutor']);
+        });
+
+        Gate::define('manage-news', function (User $user) {
+            return in_array($user->role, ['admin', 'locutor', 'evangelizador_avisos', 'avisos']);
         });
 
         Gate::define('manage-gospels', function (User $user) {
-            return in_array($user->role, ['admin', 'evangelizador']);
+            return in_array($user->role, ['admin', 'locutor', 'evangelizador_avisos', 'evangelizador']);
         });
     }
 }

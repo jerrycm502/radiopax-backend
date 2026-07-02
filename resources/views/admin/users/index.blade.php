@@ -54,19 +54,31 @@
                                     {{ $item->email }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    @if ($item->role === 'admin')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-100">
-                                            <i data-lucide="shield" class="w-3.5 h-3.5 mr-1 text-rose-500"></i> Administrador
-                                        </span>
-                                    @elseif ($item->role === 'evangelizador')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                            <i data-lucide="book-open" class="w-3.5 h-3.5 mr-1 text-emerald-500"></i> Evangelizador
-                                        </span>
-                                    @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-100">
-                                            {{ $item->role }}
-                                        </span>
-                                    @endif
+                                     @if ($item->role === 'admin')
+                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-100">
+                                             <i data-lucide="shield" class="w-3.5 h-3.5 mr-1 text-rose-500"></i> Administrador
+                                         </span>
+                                     @elseif ($item->role === 'locutor')
+                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100">
+                                             <i data-lucide="radio" class="w-3.5 h-3.5 mr-1 text-amber-500"></i> Cabina de Radio
+                                         </span>
+                                     @elseif ($item->role === 'evangelizador_avisos')
+                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                                             <i data-lucide="layers" class="w-3.5 h-3.5 mr-1 text-indigo-500"></i> Evangelio y Avisos
+                                         </span>
+                                     @elseif ($item->role === 'avisos')
+                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 border border-purple-100">
+                                             <i data-lucide="megaphone" class="w-3.5 h-3.5 mr-1 text-purple-500"></i> Avisos y Noticias
+                                         </span>
+                                     @elseif ($item->role === 'evangelizador')
+                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                             <i data-lucide="book-open" class="w-3.5 h-3.5 mr-1 text-emerald-500"></i> Evangelizador
+                                         </span>
+                                     @else
+                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-50 text-slate-700 border border-slate-100">
+                                             {{ $item->role }}
+                                         </span>
+                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-slate-450 text-xs">
                                     {{ $item->created_at ? $item->created_at->format('d/m/Y H:i') : '-' }}

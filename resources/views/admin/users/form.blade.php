@@ -38,8 +38,11 @@
                     <label for="role" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Rol / Nivel de Acceso</label>
                     <select name="role" id="role" required
                         class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-1 focus:ring-navyPetrol focus:outline-none bg-slate-50 focus:bg-white">
-                        <option value="evangelizador" {{ old('role', $item->role) === 'evangelizador' ? 'selected' : '' }}>Evangelizador (Solo Evangelio Diario)</option>
                         <option value="admin" {{ old('role', $item->role) === 'admin' ? 'selected' : '' }}>Administrador (Acceso Completo)</option>
+                        <option value="locutor" {{ old('role', $item->role) === 'locutor' ? 'selected' : '' }}>Cabina de Radio (Acceso Completo menos Usuarios)</option>
+                        <option value="evangelizador_avisos" {{ old('role', $item->role) === 'evangelizador_avisos' ? 'selected' : '' }}>Evangelio y Avisos</option>
+                        <option value="avisos" {{ old('role', $item->role) === 'avisos' ? 'selected' : '' }}>Avisos y Noticias (Solo Avisos)</option>
+                        <option value="evangelizador" {{ old('role', $item->role) === 'evangelizador' ? 'selected' : '' }}>Evangelizador (Solo Evangelio Diario)</option>
                     </select>
                     @error('role')
                         <span class="text-red-500 text-xs mt-1 block font-medium">{{ $message }}</span>

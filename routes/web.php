@@ -20,8 +20,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Cabin Control (Admins only)
     Route::post('/cabin', [AdminController::class, 'updateCabin'])->name('cabin.update')->middleware('can:manage-all');
 
-    // News CRUD (Admins only)
-    Route::middleware('can:manage-all')->group(function () {
+    // News CRUD (Avisos)
+    Route::middleware('can:manage-news')->group(function () {
         Route::get('/news', [AdminController::class, 'newsIndex'])->name('news.index');
         Route::get('/news/create', [AdminController::class, 'newsCreate'])->name('news.create');
         Route::post('/news', [AdminController::class, 'newsStore'])->name('news.store');

@@ -59,7 +59,7 @@
                         <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
                         <span>Cabina</span>
                     </a>
-                    @can('manage-all')
+                    @can('manage-news')
                     <a href="{{ route('admin.news.index') }}" class="flex items-center space-x-1.5 text-sm font-medium transition {{ request()->routeIs('admin.news.*') ? 'text-accentGold' : 'text-white/80 hover:text-white' }}">
                         <i data-lucide="megaphone" class="w-4 h-4"></i>
                         <span>Avisos</span>
@@ -118,7 +118,7 @@
                     <i data-lucide="layout-dashboard" class="w-5 h-5 mb-0.5"></i>
                     <span>Cabina</span>
                 </a>
-                @can('manage-all')
+                @can('manage-news')
                 <a href="{{ route('admin.news.index') }}" class="flex flex-col items-center text-[10px] font-medium transition {{ request()->routeIs('admin.news.*') ? 'text-accentGold' : 'text-white/70 hover:text-white' }}">
                     <i data-lucide="megaphone" class="w-5 h-5 mb-0.5"></i>
                     <span>Avisos</span>

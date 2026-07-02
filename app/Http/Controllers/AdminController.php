@@ -339,7 +339,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:150|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,evangelizador',
+            'role' => 'required|in:admin,evangelizador,locutor,evangelizador_avisos,avisos',
         ]);
 
         $data['password'] = bcrypt($data['password']);
@@ -362,7 +362,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:150|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|in:admin,evangelizador',
+            'role' => 'required|in:admin,evangelizador,locutor,evangelizador_avisos,avisos',
         ]);
 
         if (!empty($data['password'])) {
