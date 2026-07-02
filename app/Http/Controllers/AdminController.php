@@ -7,7 +7,9 @@ use App\Models\WeeklySchedule;
 use App\Models\DailyGospel;
 use App\Models\CabinStatus;
 use App\Models\Sponsor;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
@@ -313,5 +315,76 @@ class AdminController extends Controller
     {
         $sponsor->delete();
         return redirect()->route('admin.sponsors.index')->with('success', 'Patrocinador eliminado correctamente.');
+    }
+
+    // --- Users CRUD (Admins Only) ---
+
+    public function usersIndex()
+    {
+        Gate::authorize('manage-users');
+        $users = User::orderBy('name', 'asc')->paginate(10);
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function usersCreate()
+    {
+        Gate::authorize('manage-users');
+        return view('admin.users.form', ['item' => new User()]);
+    }
+
+    public function usersStore(Request $request)
+    {
+        Gate::authorize('manage-users');
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:150|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,evangelizador',
+        ]);
+
+        $data['password'] = bcrypt($data['password']);
+
+        User::create($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente.');
+    }
+
+    public function usersEdit(User $user)
+    {
+        Gate::authorize('manage-users');
+        return view('admin.users.form', ['item' => $user]);
+    }
+
+    public function usersUpdate(Request $request, User $user)
+    {
+        Gate::authorize('manage-users');
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email|max:150|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|in:admin,evangelizador',
+        ]);
+
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado correctamente.');
+    }
+
+    public function usersDestroy(User $user)
+    {
+        Gate::authorize('manage-users');
+        
+        if (auth()->id() === $user->id) {
+            return redirect()->route('admin.users.index')->with('error', 'No puedes eliminar tu propia cuenta.');
+        }
+
+        $user->delete();
+        return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente.');
     }
 }

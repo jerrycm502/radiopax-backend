@@ -19,6 +19,7 @@
 
     <!-- Quick Stats Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        @can('manage-all')
         <!-- Stat card 1: News -->
         <a href="{{ route('admin.news.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
             <div class="space-y-1">
@@ -29,6 +30,7 @@
                 <i data-lucide="megaphone" class="w-6 h-6"></i>
             </div>
         </a>
+        @endcan
 
         <!-- Stat card 2: Gospel -->
         <a href="{{ route('admin.gospels.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
@@ -41,6 +43,7 @@
             </div>
         </a>
 
+        @can('manage-all')
         <!-- Stat card 3: Weekly Schedule -->
         <a href="{{ route('admin.schedules.index') }}" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition duration-200 flex items-center justify-between group">
             <div class="space-y-1">
@@ -62,8 +65,10 @@
                 <i data-lucide="handshake" class="w-6 h-6"></i>
             </div>
         </a>
+        @endcan
     </div>
 
+    @can('manage-all')
     <!-- Cabin Controller & Live Stream Controls -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
@@ -212,9 +217,31 @@
         </div>
 
     </div>
+    @endcan
+
+    @cannot('manage-all')
+    <!-- Dashboard card for Evangelizador -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-4">
+        <div class="flex items-center space-x-3 text-emerald-600">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
+            <h2 class="text-xl font-serif font-bold text-slate-800">Panel del Evangelizador</h2>
+        </div>
+        <p class="text-slate-500 text-sm leading-relaxed">
+            Bienvenido a tu panel de control de Radio Pax. Como evangelizador, tienes los permisos necesarios para administrar las lecturas y reflexiones del <strong>Evangelio Diario</strong>. 
+            Utiliza la barra de navegación para agregar nuevos evangelios o editar los existentes.
+        </p>
+        <div class="pt-2">
+            <a href="{{ route('admin.gospels.create') }}" class="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow transition duration-200">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Publicar Evangelio de Hoy</span>
+            </a>
+        </div>
+    </div>
+    @endcannot
 
 </div>
 
+@can('manage-all')
 <!-- Interactive Client-side Script -->
 <script>
     function toggleCabinInputs(isManual) {
@@ -269,4 +296,5 @@
         updatePreview();
     });
 </script>
+@endcan
 @endsection
