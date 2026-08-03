@@ -649,7 +649,7 @@
                 </div>
                 <div class="space-y-2">
                     <h3 class="text-xl font-bold text-slate-100">¡Muchas Gracias!</h3>
-                    <p class="text-sm text-slate-400 leading-relaxed">Tu donación ha sido procesada con éxito a través de Recurrente. Tu generosidad ayuda a mantener la señal en el aire y a continuar nuestra labor pastoral.</p>
+                    <p class="text-sm text-slate-400 leading-relaxed">Tu donación ha sido procesada con éxito. Tu generosidad ayuda a mantener la señal en el aire y a continuar nuestra labor pastoral.</p>
                 </div>
                 <button @click="show = false; window.history.replaceState({}, document.title, window.location.pathname);"
                         class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow transition duration-200">
@@ -794,7 +794,7 @@
                                 class="w-full max-w-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-lg shadow-amber-500/10 transform active:scale-98 hover:scale-101 hover:shadow-xl hover:shadow-amber-500/20 transition-all duration-250 flex items-center justify-center gap-2 mx-auto cursor-pointer"
                                 :disabled="amount === 'custom' && (!customAmount || customAmount < 5)">
                             <svg class="w-4 h-4 shrink-0 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                             </svg>
                             <span x-text="frequency === 'monthly' ? 'Iniciar Donación Mensual' : 'Enviar Donación Única'"></span>
                         </button>
