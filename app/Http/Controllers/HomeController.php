@@ -44,16 +44,37 @@ class HomeController extends Controller
         $request->validate([
             'amount' => 'required|numeric|min:5',
             'frequency' => 'required|in:one-time,monthly',
+            'name' => 'nullable|string|max:100',
         ]);
 
         $amount = (float) $request->input('amount');
         $amountInCents = (int) round($amount * 100);
         $frequency = $request->input('frequency');
+        $name = $request->input('name') ?: 'Donante Anónimo';
 
         $secretKey = env('RECURRENTE_SECRET_KEY');
 
         if (!$secretKey) {
             return back()->with('error', 'La pasarela de pago no está configurada (llave API faltante).');
+        }
+
+        // Try pre-creating customer to prevent checkout form from demanding an email input
+        $customerId = null;
+        try {
+            $customerEmail = 'donante_' . time() . '_' . rand(100, 999) . '@radiopax.com';
+            $customerResponse = \Illuminate\Support\Facades\Http::withHeaders([
+                'X-SECRET-KEY' => $secretKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://app.recurrente.com/api/customers', [
+                'email' => $customerEmail,
+                'full_name' => $name,
+            ]);
+
+            if ($customerResponse->successful()) {
+                $customerId = $customerResponse->json('id');
+            }
+        } catch (\Exception $e) {
+            // Gracefully ignore, fallback to checkout without customer_id link
         }
 
         $itemName = $frequency === 'monthly' ? 'Donación Mensual - Radio Pax' : 'Donación Única - Radio Pax';
@@ -71,16 +92,22 @@ class HomeController extends Controller
             $item['billing_interval_count'] = 1;
         }
 
-        // Call Recurrente API
+        // Call Recurrente API checkouts
         try {
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                'X-SECRET-KEY' => $secretKey,
-                'Content-Type' => 'application/json',
-            ])->post('https://app.recurrente.com/api/checkouts', [
+            $payload = [
                 'items' => [$item],
                 'success_url' => route('home', ['status' => 'donation_success']),
                 'cancel_url' => route('home', ['status' => 'donation_cancelled']),
-            ]);
+            ];
+
+            if ($customerId) {
+                $payload['customer_id'] = $customerId;
+            }
+
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'X-SECRET-KEY' => $secretKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://app.recurrente.com/api/checkouts', $payload);
 
             if ($response->successful()) {
                 $checkoutUrl = $response->json('checkout_url');
