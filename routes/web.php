@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 // Public listener homepage
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::post('/donaciones/checkout', [HomeController::class, 'donationCheckout'])->name('donations.checkout');
 
 // Authentication Routes
 Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('login');

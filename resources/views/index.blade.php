@@ -102,12 +102,12 @@
                 </div>
             </a>
 
-            <!-- Navigation Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
                 <a href="#inicio" class="text-slate-300 hover:text-amber-500 transition-colors">Inicio</a>
                 <a href="#evangelio" class="text-slate-300 hover:text-amber-500 transition-colors">Evangelio de Hoy</a>
                 <a href="#programacion" class="text-slate-300 hover:text-amber-500 transition-colors">Programación</a>
                 <a href="#noticias" class="text-slate-300 hover:text-amber-500 transition-colors">Noticias</a>
+                <a href="#donaciones" class="text-slate-300 hover:text-amber-500 transition-colors">Donar</a>
                 <a href="#contacto" class="text-slate-300 hover:text-amber-500 transition-colors">Contacto</a>
             </nav>
 
@@ -136,10 +136,16 @@
                     </p>
                     
                     <div class="pt-4 flex flex-wrap gap-4 justify-center lg:justify-start">
-                        <a href="#evangelio" class="bg-slate-900 hover:bg-slate-855 border border-slate-800 text-slate-200 px-6 py-3 rounded-full text-sm font-bold shadow-md hover:border-slate-700 transition-all duration-200">
+                        <a href="#donaciones" class="bg-amber-500 hover:bg-amber-600 text-slate-950 px-6 py-3 rounded-full text-sm font-bold shadow-md shadow-amber-500/10 transition-all duration-200 flex items-center gap-1.5 hover:scale-103">
+                            <svg class="w-4 h-4 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            Apoyar Radio
+                        </a>
+                        <a href="#evangelio" class="bg-slate-900/60 hover:bg-slate-900 border border-slate-800 text-slate-200 px-6 py-3 rounded-full text-sm font-bold shadow-md hover:border-slate-700 transition-all duration-200">
                             Evangelio de Hoy
                         </a>
-                        <a href="#programacion" class="bg-slate-900/40 hover:bg-slate-900 border border-slate-800/80 text-slate-300 px-6 py-3 rounded-full text-sm font-bold hover:border-slate-700 transition-all duration-200">
+                        <a href="#programacion" class="bg-slate-900/30 hover:bg-slate-900/60 border border-slate-800/80 text-slate-300 px-6 py-3 rounded-full text-sm font-bold hover:border-slate-700 transition-all duration-200">
                             Programación
                         </a>
                     </div>
@@ -628,7 +634,179 @@
 
                 <!-- Promo Device Preview Mockup -->
                 <div class="w-full lg:w-1/3 max-w-[280px] shrink-0">
-                    <img src="{{ asset('assets/images/iphone-radio.png') }}" alt="Aplicación Radio Pax en iPhone" class="w-full h-auto drop-shadow-2xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation Status Modals -->
+    @if(request()->query('status') === 'donation_success')
+        <div x-data="{ show: true }" x-show="show" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full text-center space-y-6 shadow-2xl transform transition-all duration-300 scale-100">
+                <div class="w-16 h-16 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-xl font-bold text-slate-100">¡Muchas Gracias!</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">Tu donación ha sido procesada con éxito a través de Recurrente. Tu generosidad ayuda a mantener la señal en el aire y a continuar nuestra labor pastoral.</p>
+                </div>
+                <button @click="show = false; window.history.replaceState({}, document.title, window.location.pathname);"
+                        class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow transition duration-200">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    @endif
+
+    @if(request()->query('status') === 'donation_cancelled')
+        <div x-data="{ show: true }" x-show="show" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 max-w-sm w-full text-center space-y-6 shadow-2xl transform transition-all duration-300 scale-100">
+                <div class="w-16 h-16 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-xl font-bold text-slate-100">Donación Cancelada</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">El proceso de pago fue cancelado. Si tienes algún problema con la pasarela de Recurrente, no dudes en contactarnos.</p>
+                </div>
+                <button @click="show = false; window.history.replaceState({}, document.title, window.location.pathname);"
+                        class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-2xl shadow transition duration-200">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    @endif
+
+    <!-- Donation Section -->
+    <section id="donaciones" class="py-16 md:py-24 border-b border-slate-900 bg-gradient-to-b from-slate-900 to-slate-950 animate-fade-in"
+             x-data="{ amount: 50, frequency: 'one-time', customAmount: '' }">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-xl mx-auto mb-12">
+                <h3 class="text-xs font-bold text-amber-500 uppercase tracking-widest">Sostén Nuestra Obra</h3>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-100 mt-2">Apoya Nuestra Misión</h2>
+                <div class="w-12 h-1 bg-amber-500 mx-auto mt-3 rounded-full"></div>
+                <p class="text-sm text-slate-400 mt-4 leading-relaxed">
+                    Radio Pax es una obra sin fines de lucro que se sostiene gracias a la generosidad de oyentes como tú. Tu aporte contribuye directamente a llevar el mensaje del Evangelio a más hogares.
+                </p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="bg-slate-900/30 border border-slate-850 rounded-3xl p-6 md:p-10 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-8 -top-8 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+                <!-- Display session flash alerts if any -->
+                @if (session('error'))
+                    <div class="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-450 rounded-xl text-sm font-semibold flex items-center gap-2">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                @endif
+
+                <form action="{{ route('donations.checkout') }}" method="POST" class="space-y-8">
+                    @csrf
+                    <!-- Hidden field to send final amount -->
+                    <input type="hidden" name="amount" :value="amount === 'custom' ? customAmount : amount">
+
+                    <!-- Frequency Tabs -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 text-center mb-4">Tipo de Donación</label>
+                        <div class="flex justify-center">
+                            <div class="bg-slate-950 p-1 rounded-xl border border-slate-900 inline-flex">
+                                <label class="cursor-pointer select-none">
+                                    <input type="radio" name="frequency" value="one-time" x-model="frequency" class="sr-only">
+                                    <div class="px-5 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-all duration-200"
+                                         :class="frequency === 'one-time' ? 'bg-amber-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-slate-200'">
+                                        Única
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer select-none">
+                                    <input type="radio" name="frequency" value="monthly" x-model="frequency" class="sr-only">
+                                    <div class="px-5 py-2.5 rounded-lg text-xs font-bold tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5"
+                                         :class="frequency === 'monthly' ? 'bg-amber-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-slate-200'">
+                                        Mensual <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-600/20 text-amber-400 border border-amber-500/20" :class="frequency === 'monthly' ? 'bg-slate-950/20 text-slate-900 border-transparent' : ''">Recurrente</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Amount Selection -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-slate-400 text-center mb-4">Selecciona el Monto (GTQ)</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                            <!-- Option 25 -->
+                            <button type="button" @click="amount = 25; customAmount = ''"
+                                    class="py-4 rounded-2xl border text-sm font-bold tracking-wider transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer"
+                                    :class="amount === 25 ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-lg' : 'bg-slate-950/40 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-200'">
+                                <span class="text-lg">Q25</span>
+                            </button>
+                            <!-- Option 50 -->
+                            <button type="button" @click="amount = 50; customAmount = ''"
+                                    class="py-4 rounded-2xl border text-sm font-bold tracking-wider transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer"
+                                    :class="amount === 50 ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-lg' : 'bg-slate-950/40 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-200'">
+                                <span class="text-lg">Q50</span>
+                            </button>
+                            <!-- Option 100 -->
+                            <button type="button" @click="amount = 100; customAmount = ''"
+                                    class="py-4 rounded-2xl border text-sm font-bold tracking-wider transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer"
+                                    :class="amount === 100 ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-lg' : 'bg-slate-950/40 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-200'">
+                                <span class="text-lg">Q100</span>
+                            </button>
+                            <!-- Option 200 -->
+                            <button type="button" @click="amount = 200; customAmount = ''"
+                                    class="py-4 rounded-2xl border text-sm font-bold tracking-wider transition-all duration-200 flex flex-col items-center justify-center gap-1 cursor-pointer"
+                                    :class="amount === 200 ? 'bg-amber-500/10 border-amber-500 text-amber-400 shadow-lg' : 'bg-slate-950/40 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-200'">
+                                <span class="text-lg">Q200</span>
+                            </button>
+                        </div>
+
+                        <!-- Custom Amount Input -->
+                        <div class="max-w-xs mx-auto mt-6">
+                            <div class="relative rounded-2xl bg-slate-950/40 border border-slate-900 focus-within:border-amber-500 focus-within:ring-1 focus-within:ring-amber-500 transition-all duration-200">
+                                <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500 text-sm font-bold">Q</span>
+                                <input type="number" min="5" step="5" placeholder="Otro monto" x-model.number="customAmount" @input="amount = 'custom'"
+                                       class="w-full pl-8 pr-4 py-3 bg-transparent border-0 rounded-2xl text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:ring-0">
+                            </div>
+                            <span class="text-[10px] text-slate-500 text-center block mt-1">Mínimo de donación: Q5.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Submit CTA Button -->
+                    <div class="text-center pt-4">
+                        <button type="submit" 
+                                class="w-full max-w-sm px-8 py-4 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-950 font-black text-sm uppercase tracking-wider rounded-2xl shadow-lg shadow-amber-500/10 transform active:scale-98 hover:scale-101 hover:shadow-xl hover:shadow-amber-500/20 transition-all duration-250 flex items-center justify-center gap-2 mx-auto cursor-pointer"
+                                :disabled="amount === 'custom' && (!customAmount || customAmount < 5)">
+                            <svg class="w-4 h-4 shrink-0 stroke-[2.5]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            <span x-text="frequency === 'monthly' ? 'Iniciar Donación Mensual' : 'Enviar Donación Única'"></span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Trust Badge footer -->
+                <div class="mt-8 pt-6 border-t border-slate-850 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                    <div class="flex items-center gap-3 justify-center sm:justify-start">
+                        <span class="p-2 bg-slate-950 rounded-xl border border-slate-900 text-amber-500 shrink-0">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </span>
+                        <div>
+                            <p class="text-xs font-bold text-slate-350">Pago 100% Seguro</p>
+                            <p class="text-[10px] text-slate-500">Cifrado SSL de extremo a extremo y respaldado por Recurrente.</p>
+                        </div>
+                    </div>
+                    <!-- Accepted Credit Cards Logos mockup -->
+                    <div class="flex items-center gap-2 opacity-60">
+                        <span class="text-[10px] font-bold text-slate-500 mr-1">Aceptamos:</span>
+                        <div class="bg-slate-950 px-2 py-1 rounded border border-slate-900 text-slate-400 font-mono text-[9px] font-black tracking-widest">VISA</div>
+                        <div class="bg-slate-950 px-2 py-1 rounded border border-slate-900 text-slate-400 font-mono text-[9px] font-black tracking-widest">MC</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -663,6 +841,7 @@
                         <li><a href="#inicio" class="hover:text-slate-200 transition-colors">Inicio</a></li>
                         <li><a href="#evangelio" class="hover:text-slate-200 transition-colors">Evangelio del Día</a></li>
                         <li><a href="#programacion" class="hover:text-slate-200 transition-colors">Programación</a></li>
+                        <li><a href="#donaciones" class="hover:text-slate-200 transition-colors">Donaciones</a></li>
                         <li><a href="#noticias" class="hover:text-slate-200 transition-colors">Noticias</a></li>
                     </ul>
                 </div>
