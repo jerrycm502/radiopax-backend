@@ -179,4 +179,91 @@ class ApiController extends Controller
             ]
         ]);
     }
+
+    /**
+     * Handle the checkout redirection with Recurrente for API.
+     */
+    public function donationCheckout(\Illuminate\Http\Request $request): JsonResponse
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:5',
+            'frequency' => 'required|in:one-time,monthly',
+            'name' => 'nullable|string|max:100',
+        ]);
+
+        $amount = (float) $request->input('amount');
+        $amountInCents = (int) round($amount * 100);
+        $frequency = $request->input('frequency');
+        $name = $request->input('name') ?: 'Donante Anónimo';
+
+        $secretKey = env('RECURRENTE_SECRET_KEY');
+
+        if (!$secretKey) {
+            return response()->json(['error' => 'La pasarela de pago no está configurada.'], 500);
+        }
+
+        // Try pre-creating customer to prevent checkout form from demanding an email input
+        $customerId = null;
+        try {
+            $customerEmail = 'donante_' . time() . '_' . rand(100, 999) . '@radiopax.com';
+            $customerResponse = \Illuminate\Support\Facades\Http::withHeaders([
+                'X-SECRET-KEY' => $secretKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://app.recurrente.com/api/customers', [
+                'email' => $customerEmail,
+                'full_name' => $name,
+            ]);
+
+            if ($customerResponse->successful()) {
+                $customerId = $customerResponse->json('id');
+            }
+        } catch (\Exception $e) {
+            // Gracefully ignore, fallback
+        }
+
+        $itemName = $frequency === 'monthly' ? 'Donación Mensual - Radio Pax' : 'Donación Única - Radio Pax';
+        
+        $item = [
+            'name' => $itemName,
+            'amount_in_cents' => $amountInCents,
+            'currency' => 'GTQ',
+            'quantity' => 1,
+        ];
+
+        if ($frequency === 'monthly') {
+            $item['charge_type'] = 'recurring';
+            $item['billing_interval'] = 'month';
+            $item['billing_interval_count'] = 1;
+        }
+
+        // Call Recurrente API checkouts
+        try {
+            $payload = [
+                'items' => [$item],
+                'success_url' => route('home', ['status' => 'donation_success']),
+                'cancel_url' => route('home', ['status' => 'donation_cancelled']),
+            ];
+
+            if ($customerId) {
+                $payload['customer_id'] = $customerId;
+            }
+
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'X-SECRET-KEY' => $secretKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://app.recurrente.com/api/checkouts', $payload);
+
+            if ($response->successful()) {
+                $checkoutUrl = $response->json('checkout_url');
+                if ($checkoutUrl) {
+                    return response()->json(['checkout_url' => $checkoutUrl]);
+                }
+            }
+
+            $errorMsg = $response->json('error') ?? 'Error al comunicarse con la pasarela de pagos.';
+            return response()->json(['error' => $errorMsg], 400);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'No se pudo crear el checkout: ' . $e->getMessage()], 500);
+        }
+    }
 }
