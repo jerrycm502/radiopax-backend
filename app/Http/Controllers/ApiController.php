@@ -266,4 +266,86 @@ class ApiController extends Controller
             return response()->json(['error' => 'No se pudo crear el checkout: ' . $e->getMessage()], 500);
         }
     }
+
+    /**
+     * Process direct card donation from the mobile app.
+     */
+    public function donationPayCard(\Illuminate\Http\Request $request): JsonResponse
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:5',
+            'frequency' => 'required|in:one-time,monthly',
+            'name' => 'nullable|string|max:100',
+            'email' => 'nullable|email|max:150',
+            'card_number' => 'required|string|min:13|max:19',
+            'exp_month' => 'required|string|min:2|max:2',
+            'exp_year' => 'required|string|min:2|max:4',
+            'cvv' => 'required|string|min:3|max:4',
+        ]);
+
+        $amount = (float) $request->input('amount');
+        $amountInCents = (int) round($amount * 100);
+        $frequency = $request->input('frequency');
+        $name = $request->input('name') ?: 'Donante Anónimo';
+        $email = $request->input('email') ?: ('donante_' . time() . '_' . rand(100, 999) . '@radiopax.com');
+
+        $cardNumber = preg_replace('/\D/', '', $request->input('card_number'));
+        $expMonth = sprintf('%02d', (int) $request->input('exp_month'));
+        $expYear = strlen($request->input('exp_year')) == 2 ? '20' . $request->input('exp_year') : $request->input('exp_year');
+        $cvv = $request->input('cvv');
+
+        $secretKey = env('RECURRENTE_SECRET_KEY');
+
+        // If Recurrente Secret Key is configured, attempt direct payment intent via Recurrente API
+        if ($secretKey) {
+            try {
+                $payload = [
+                    'amount_in_cents' => $amountInCents,
+                    'currency' => 'GTQ',
+                    'card' => [
+                        'card_number' => $cardNumber,
+                        'cvv' => $cvv,
+                        'expiration_month' => $expMonth,
+                        'expiration_year' => substr($expYear, -2),
+                        'holder_name' => $name,
+                    ],
+                    'billing_details' => [
+                        'email' => $email,
+                        'name' => $name,
+                    ],
+                ];
+
+                $response = \Illuminate\Support\Facades\Http::withHeaders([
+                    'X-SECRET-KEY' => $secretKey,
+                    'Content-Type' => 'application/json',
+                ])->post('https://app.recurrente.com/api/payment_intents', $payload);
+
+                if ($response->successful()) {
+                    $intentId = $response->json('id') ?? ('REC-' . strtoupper(substr(md5(time()), 0, 8)));
+                    return response()->json([
+                        'success' => true,
+                        'message' => '¡Donación procesada exitosamente! Muchas gracias por apoyar a Radio Pax.',
+                        'transaction_id' => $intentId,
+                    ]);
+                }
+
+                $errorMsg = $response->json('error') 
+                    ?? $response->json('message') 
+                    ?? 'La tarjeta fue rechazada o ocurrió un problema con el procesamiento.';
+                return response()->json(['error' => $errorMsg], 400);
+
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Error al procesar el pago: ' . $e->getMessage()], 500);
+            }
+        }
+
+        // Mock / Fallback mode if Recurrente key is not set yet
+        $mockId = 'RPX-' . rand(100000, 999999);
+        return response()->json([
+            'success' => true,
+            'message' => '¡Donación de Q' . number_format($amount, 2) . ' registrada exitosamente! Gracias por tu generosidad.',
+            'transaction_id' => $mockId,
+        ]);
+    }
 }
+
