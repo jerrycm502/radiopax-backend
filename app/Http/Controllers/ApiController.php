@@ -329,9 +329,36 @@ class ApiController extends Controller
                     ]);
                 }
 
+                // Fallback: If direct payment_intent is rejected (Recurrente requires Hosted Checkout),
+                // create a checkout session and return checkout_url for In-App browser
+                $itemName = $frequency === 'monthly' ? 'Donación Mensual - Radio Pax' : 'Donación Única - Radio Pax';
+                $checkoutPayload = [
+                    'items' => [[
+                        'name' => $itemName,
+                        'amount_in_cents' => $amountInCents,
+                        'currency' => 'GTQ',
+                        'quantity' => 1,
+                    ]],
+                    'success_url' => route('home', ['status' => 'donation_success']),
+                    'cancel_url' => route('home', ['status' => 'donation_cancelled']),
+                ];
+
+                $checkoutResponse = \Illuminate\Support\Facades\Http::withHeaders([
+                    'X-SECRET-KEY' => $secretKey,
+                    'Content-Type' => 'application/json',
+                ])->post('https://app.recurrente.com/api/checkouts', $checkoutPayload);
+
+                if ($checkoutResponse->successful()) {
+                    $checkoutUrl = $checkoutResponse->json('checkout_url');
+                    if ($checkoutUrl) {
+                        return response()->json(['checkout_url' => $checkoutUrl]);
+                    }
+                }
+
                 $errorMsg = $response->json('error') 
                     ?? $response->json('message') 
-                    ?? 'La tarjeta fue rechazada o ocurrió un problema con el procesamiento.';
+                    ?? $checkoutResponse->json('error')
+                    ?? 'La pasarela de pago no pudo procesar la transacción.';
                 return response()->json(['error' => $errorMsg], 400);
 
             } catch (\Exception $e) {
